@@ -1,16 +1,35 @@
 import './styles/app.css';
+import { useState, useEffect } from 'react';
 import { useGame } from './hooks/useGame';
 import { ModeSelector } from './components/ModeSelector';
 import { Timer } from './components/Timer';
 import { GameBoard } from './components/GameBoard';
 import { Stats } from './components/Stats';
 import { Results } from './components/Results';
+import { AuthModal } from './components/AuthModal';
+import { getSession, onAuthStateChange, signOut } from './services/authService';
+import type { Session } from '@supabase/supabase-js';
 
 function App() {
   const { state, mode, setMode, startGame, handleInput, submitWord, reset, finishGame } = useGame();
+  const [session, setSession] = useState<Session | null>(null);
+  const [showAuth, setShowAuth] = useState(false);
+
+  useEffect(() => {
+    getSession().then(setSession);
+    const { data: { subscription } } = onAuthStateChange(s => setSession(s as Session | null));
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <>
+      {session && (
+        <div className="user-bar">
+          <span className="user-name">{session.user.user_metadata?.username || session.user.email?.split('@')[0]}</span>
+          <button className="logout-link" onClick={() => signOut()}>déconnexion</button>
+        </div>
+      )}
+
       <div className="header">
         <h1>MonkeyTsaz</h1>
       </div>
@@ -60,7 +79,16 @@ function App() {
           wpm={state.wpm}
           errors={state.errors}
           mode={mode}
+          session={session}
           onRestart={() => { reset(); startGame(); }}
+          onOpenAuth={() => setShowAuth(true)}
+        />
+      )}
+
+      {showAuth && (
+        <AuthModal
+          onClose={() => setShowAuth(false)}
+          onSuccess={() => setShowAuth(false)}
         />
       )}
     </>

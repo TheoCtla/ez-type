@@ -24,3 +24,16 @@ export interface GameStats {
   errors: number;
   accuracy: number;
 }
+
+export interface LeaderboardEntry {
+  id?: string;
+  user_id?: string;
+  username?: string;
+  mode: string;
+  score: number;
+  wpm: number;
+  errors: number;
+  accuracy: number;
+  signature: string;
+  created_at?: string;
+}
