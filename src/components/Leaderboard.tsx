@@ -4,6 +4,12 @@ import { GAME_MODES } from '../utils/constants';
 import type { GameMode, LeaderboardEntry } from '../types';
 import type { Session } from '@supabase/supabase-js';
 
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return m > 0 ? `${m}m${s.toString().padStart(2, '0')}s` : `${s}s`;
+}
+
 interface LeaderboardProps {
   session: Session | null;
   onBack: () => void;
@@ -13,6 +19,7 @@ export function Leaderboard({ session, onBack }: LeaderboardProps) {
   const [mode, setMode] = useState<GameMode>(15);
   const [scores, setScores] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const showTime = mode === 'sudden-death' || mode === 'ez' || mode === 'ez-training';
 
   useEffect(() => {
     setLoading(true);
@@ -53,6 +60,7 @@ export function Leaderboard({ session, onBack }: LeaderboardProps) {
               <th>score</th>
               <th>wpm</th>
               <th>précision</th>
+              {showTime && <th>temps</th>}
             </tr>
           </thead>
           <tbody>
@@ -63,6 +71,7 @@ export function Leaderboard({ session, onBack }: LeaderboardProps) {
                 <td>{entry.score}</td>
                 <td>{entry.wpm}</td>
                 <td>{entry.accuracy}%</td>
+                {showTime && <td>{entry.elapsed_time ? formatTime(entry.elapsed_time) : '—'}</td>}
               </tr>
             ))}
           </tbody>

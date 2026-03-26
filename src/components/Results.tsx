@@ -8,16 +8,24 @@ interface ResultsProps {
   score: number;
   wpm: number;
   errors: number;
+  elapsedTime: number;
   mode: GameMode;
   session: Session | null;
   onRestart: () => void;
   onOpenAuth: () => void;
 }
 
-export function Results({ score, wpm, errors, mode, session, onRestart, onOpenAuth }: ResultsProps) {
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return m > 0 ? `${m}m${s.toString().padStart(2, '0')}s` : `${s}s`;
+}
+
+export function Results({ score, wpm, errors, elapsedTime, mode, session, onRestart, onOpenAuth }: ResultsProps) {
   const accuracy = calculateAccuracy(score, errors);
   const isTraining = mode === 'ez-training';
   const isSuddenDeath = mode === 'sudden-death' || mode === 'ez';
+  const showTime = isSuddenDeath || isTraining;
   const finalScore = isTraining
     ? calculateTrainingScore(score, wpm, errors)
     : calculateScore(score, wpm);
@@ -35,7 +43,7 @@ export function Results({ score, wpm, errors, mode, session, onRestart, onOpenAu
     setSaving(true);
     setSaveError('');
     try {
-      await submitScore({ mode, score: finalScore, wpm, errors, accuracy });
+      await submitScore({ mode, score: finalScore, wpm, errors, accuracy, elapsed_time: Math.round(elapsedTime) });
       setSaved(true);
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : 'Erreur');
@@ -107,6 +115,7 @@ export function Results({ score, wpm, errors, mode, session, onRestart, onOpenAu
                 <th>joueur</th>
                 <th>score</th>
                 <th>wpm</th>
+                {showTime && <th>temps</th>}
               </tr>
             </thead>
             <tbody>
@@ -116,6 +125,7 @@ export function Results({ score, wpm, errors, mode, session, onRestart, onOpenAu
                   <td>{entry.username ?? '—'}</td>
                   <td>{entry.score}</td>
                   <td>{entry.wpm}</td>
+                  {showTime && <td>{entry.elapsed_time ? formatTime(entry.elapsed_time) : '—'}</td>}
                 </tr>
               ))}
             </tbody>

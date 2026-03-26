@@ -34,6 +34,7 @@ export interface LeaderboardEntry {
   wpm: number;
   errors: number;
   accuracy: number;
+  elapsed_time?: number;
   signature: string;
   created_at?: string;
 }

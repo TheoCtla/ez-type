@@ -91,6 +91,7 @@ function App() {
               score={state.score}
               wpm={state.wpm}
               errors={state.errors}
+              elapsedTime={state.elapsedTime}
               mode={mode}
               session={session}
               onRestart={() => { reset(); startGame(); }}

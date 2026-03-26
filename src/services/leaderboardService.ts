@@ -7,6 +7,7 @@ interface SubmitParams {
   wpm: number;
   errors: number;
   accuracy: number;
+  elapsed_time?: number;
 }
 
 export async function submitScore(entry: SubmitParams): Promise<void> {
@@ -20,6 +21,7 @@ export async function submitScore(entry: SubmitParams): Promise<void> {
       wpm: entry.wpm,
       errors: entry.errors,
       accuracy: entry.accuracy,
+      elapsed_time: entry.elapsed_time,
     },
   });
 

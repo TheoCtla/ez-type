@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
   }
 
   // Parse body
-  const { mode, score, wpm, errors, accuracy } = await req.json();
+  const { mode, score, wpm, errors, accuracy, elapsed_time } = await req.json();
 
   if (mode == null || score == null || wpm == null || errors == null || accuracy == null) {
     return jsonResponse({ error: "Champs manquants" }, 400);
@@ -70,6 +70,7 @@ Deno.serve(async (req) => {
     wpm,
     errors,
     accuracy,
+    elapsed_time: elapsed_time ?? null,
     signature,
   });
 
