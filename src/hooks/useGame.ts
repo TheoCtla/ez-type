@@ -4,6 +4,8 @@ import { generateWord } from '../utils/wordGenerator';
 import { calculateWpm } from '../utils/wpm';
 import { SUDDEN_DEATH_MAX_TIME } from '../utils/constants';
 
+const COUNTDOWN_SECONDS = 5;
+
 const initialState: GameState = {
   status: 'idle',
   targetWord: '',
@@ -19,7 +21,9 @@ const initialState: GameState = {
 export function useGame() {
   const [mode, setMode] = useState<GameMode>(30);
   const [state, setState] = useState<GameState>(initialState);
+  const [countdown, setCountdown] = useState<number>(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(0);
 
   const clearTimer = useCallback(() => {
@@ -29,10 +33,16 @@ export function useGame() {
     }
   }, []);
 
+  const clearCountdown = useCallback(() => {
+    if (countdownRef.current) {
+      clearInterval(countdownRef.current);
+      countdownRef.current = null;
+    }
+  }, []);
+
   const isSuddenDeath = mode === 'sudden-death' || mode === 'ez';
 
-  const startGame = useCallback(() => {
-    clearTimer();
+  const launchGame = useCallback(() => {
     const word = mode === 'ez' ? 'ez' : generateWord();
     const duration = isSuddenDeath ? SUDDEN_DEATH_MAX_TIME : mode;
 
@@ -65,7 +75,26 @@ export function useGame() {
         };
       });
     }, 100);
-  }, [mode, isSuddenDeath, clearTimer]);
+  }, [mode, isSuddenDeath]);
+
+  const startGame = useCallback(() => {
+    clearTimer();
+    clearCountdown();
+
+    setState(prev => ({ ...prev, status: 'countdown' }));
+    setCountdown(COUNTDOWN_SECONDS);
+
+    countdownRef.current = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearCountdown();
+          launchGame();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [clearTimer, clearCountdown, launchGame]);
 
   // Watch for finished status to clear timer
   useEffect(() => {
@@ -106,12 +135,17 @@ export function useGame() {
 
   const reset = useCallback(() => {
     clearTimer();
+    clearCountdown();
+    setCountdown(0);
     setState(initialState);
-  }, [clearTimer]);
+  }, [clearTimer, clearCountdown]);
 
   useEffect(() => {
-    return clearTimer;
-  }, [clearTimer]);
+    return () => {
+      clearTimer();
+      clearCountdown();
+    };
+  }, [clearTimer, clearCountdown]);
 
-  return { state, mode, setMode, startGame, handleInput, submitWord, reset };
+  return { state, mode, setMode, startGame, handleInput, submitWord, reset, countdown };
 }

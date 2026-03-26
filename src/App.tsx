@@ -5,9 +5,10 @@ import { Timer } from './components/Timer';
 import { GameBoard } from './components/GameBoard';
 import { Stats } from './components/Stats';
 import { Results } from './components/Results';
+import { Countdown } from './components/Countdown';
 
 function App() {
-  const { state, mode, setMode, startGame, handleInput, submitWord, reset } = useGame();
+  const { state, mode, setMode, startGame, handleInput, submitWord, reset, countdown } = useGame();
 
   return (
     <>
@@ -19,7 +20,7 @@ function App() {
       <ModeSelector
         current={mode}
         onChange={setMode}
-        disabled={state.status === 'playing'}
+        disabled={state.status === 'playing' || state.status === 'countdown'}
       />
 
       {state.status === 'idle' && (
@@ -31,6 +32,10 @@ function App() {
             tape le mot affiché + entrée pour valider
           </p>
         </>
+      )}
+
+      {state.status === 'countdown' && (
+        <Countdown count={countdown} />
       )}
 
       {state.status === 'playing' && (
