@@ -1,4 +1,4 @@
-import { calculateAccuracy, calculateScore } from '../utils/wpm';
+import { calculateAccuracy, calculateScore, calculateTrainingScore } from '../utils/wpm';
 import type { GameMode } from '../types';
 
 interface ResultsProps {
@@ -18,9 +18,9 @@ export function Results({ score, wpm, errors, mode, onRestart }: ResultsProps) {
   return (
     <div className="results">
       <h2>{isTraining ? 'Entraînement terminé' : 'Partie terminée'}</h2>
-      {isSuddenDeath && !isTraining && (
+      {(isSuddenDeath || isTraining) && (
         <div className="final-score">
-          <div className="stat-value">{finalScore}</div>
+          <div className="stat-value">{isTraining ? calculateTrainingScore(score, wpm, errors) : finalScore}</div>
           <div className="stat-label">score</div>
         </div>
       )}

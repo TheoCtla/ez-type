@@ -13,3 +13,8 @@ export function calculateAccuracy(correct: number, errors: number): number {
 export function calculateScore(correctWords: number, wpm: number): number {
   return Math.round(correctWords * wpm);
 }
+
+export function calculateTrainingScore(correctWords: number, wpm: number, errors: number): number {
+  const accuracy = (correctWords + errors) === 0 ? 1 : correctWords / (correctWords + errors);
+  return Math.round(correctWords * wpm * accuracy * accuracy);
+}
