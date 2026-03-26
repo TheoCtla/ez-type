@@ -14,7 +14,6 @@ function App() {
     <>
       <div className="header">
         <h1>ez type</h1>
-        <p>home row only</p>
       </div>
 
       <ModeSelector
