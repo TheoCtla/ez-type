@@ -40,3 +40,14 @@ export async function getTopScores(mode: GameMode): Promise<LeaderboardEntry[]> 
   if (error) throw error;
   return data ?? [];
 }
+
+export async function getAllScores(mode: GameMode): Promise<LeaderboardEntry[]> {
+  const { data, error } = await supabase
+    .from('leaderboard')
+    .select('*')
+    .eq('mode', String(mode))
+    .order('score', { ascending: false });
+
+  if (error) throw error;
+  return data ?? [];
+}

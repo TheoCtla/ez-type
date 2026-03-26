@@ -525,6 +525,64 @@ body {
   color: var(--text-color);
 }
 
+/* ---- Classement Link ---- */
+.login-link {
+  color: var(--main-color) !important;
+}
+
+.login-link:hover {
+  color: var(--text-color) !important;
+}
+
+.classement-link {
+  color: var(--main-color) !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+.classement-link:hover {
+  color: var(--text-color) !important;
+}
+
+/* ---- Leaderboard Page ---- */
+.leaderboard-page {
+  text-align: center;
+}
+
+.leaderboard-page h2 {
+  font-size: 1.4rem;
+  color: var(--main-color);
+  margin-bottom: 1.5rem;
+}
+
+.leaderboard-page .mode-selector {
+  margin-bottom: 2rem;
+}
+
+.leaderboard-loading,
+.leaderboard-empty {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 2rem;
+}
+
+.back-link {
+  font-family: var(--font-mono);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  display: inline-block;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.back-link:hover {
+  color: var(--main-color);
+}
+
 /* ---- Idle hint ---- */
 .idle-hint {
   text-align: center;
