@@ -495,19 +495,22 @@ body {
   font-size: 0.8rem;
 }
 
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 0.45rem 0.6rem;
+  text-align: center;
+}
+
 .leaderboard-table th {
   color: var(--text-muted);
   font-weight: 400;
   text-transform: uppercase;
   font-size: 0.65rem;
   letter-spacing: 1px;
-  padding: 0.4rem 0.6rem;
-  text-align: left;
   border-bottom: 1px solid var(--surface-color);
 }
 
 .leaderboard-table td {
-  padding: 0.45rem 0.6rem;
   color: var(--text-muted);
   border-bottom: 1px solid rgba(49, 50, 68, 0.4);
 }
