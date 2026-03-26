@@ -39,6 +39,9 @@ function App() {
           <div className="game-board">
             <div className="target-word">{state.targetWord}</div>
           </div>
+          <button className="start-btn" onClick={reset}>
+            annuler
+          </button>
         </>
       )}
 
@@ -53,6 +56,7 @@ function App() {
             onSubmit={submitWord}
           />
           <Stats score={state.score} wpm={state.wpm} errors={state.errors} />
+          <button className="quit-btn" onClick={reset}>abandonner</button>
         </>
       )}
 

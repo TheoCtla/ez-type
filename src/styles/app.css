@@ -241,6 +241,27 @@ body {
   font-size: 1.8rem;
 }
 
+/* ---- Quit Button ---- */
+.quit-btn {
+  display: block;
+  margin: 1.5rem auto 0;
+  font-family: var(--font-mono);
+  background: var(--main-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  letter-spacing: 1px;
+}
+
+.quit-btn:hover {
+  opacity: 0.85;
+}
+
 /* ---- Countdown ---- */
 .countdown {
   text-align: center;

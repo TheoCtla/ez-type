@@ -1,8 +1,17 @@
 import type { GameMode } from '../types';
 
-export const HOME_ROW_LETTERS = ['q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm'];
+// AZERTY keyboard layout (rows top to bottom)
+export const KEYBOARD_ROWS = [
+  ['a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+  ['q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm'],
+  ['w', 'x', 'c', 'v', 'b', 'n'],
+];
+
+export const ALL_LETTERS = KEYBOARD_ROWS.flat();
 
 export const WORD_LENGTH = 2;
+
+export const MAX_KEY_DISTANCE = 3; // max distance on the keyboard grid
 
 export const GAME_MODES: { label: string; value: GameMode }[] = [
   { label: '15s', value: 15 },
