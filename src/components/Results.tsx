@@ -73,8 +73,8 @@ export function Results({ score, wpm, errors, elapsedTime, mode, session, onRest
           <div className="stat-label">mots</div>
         </div>
         <div className="result-card">
-          <div className="stat-value">{errors}</div>
-          <div className="stat-label">erreurs</div>
+          <div className="stat-value">{isSuddenDeath ? formatTime(elapsedTime) : errors}</div>
+          <div className="stat-label">{isSuddenDeath ? 'temps' : 'erreurs'}</div>
         </div>
         <div className="result-card">
           <div className="stat-value">{accuracy}%</div>
