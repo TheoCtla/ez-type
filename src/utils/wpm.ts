@@ -15,7 +15,7 @@ export function calculateScore(correctWords: number, wpm: number): number {
 }
 
 export function calculateSuddenDeathScore(correctWords: number, wpm: number): number {
-  return Math.round(correctWords * Math.pow(wpm, 1.5));
+  return Math.round(correctWords * Math.pow(wpm, 1.3));
 }
 
 export function calculateTrainingScore(correctWords: number, wpm: number, errors: number): number {
