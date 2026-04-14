@@ -1,4 +1,4 @@
-export type GameMode = 15 | 30 | 60 | 'sudden-death' | 'ez' | 'ez-training';
+export type GameMode = 15 | 30 | 60 | 'sudden-death' | 'ez' | 'ez-training' | 'ez-15' | 'ez-30' | 'ez-60';
 
 export interface GameConfig {
   mode: GameMode;

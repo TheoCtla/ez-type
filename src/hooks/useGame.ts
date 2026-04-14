@@ -34,6 +34,8 @@ export function useGame() {
   const isSuddenDeath = mode === 'sudden-death' || mode === 'ez';
   const isTraining = mode === 'ez-training';
   const isUnlimited = isTraining || mode === 'ez';
+  const isEzTimed = mode === 'ez-15' || mode === 'ez-30' || mode === 'ez-60';
+  const ezTimedDuration = mode === 'ez-15' ? 15 : mode === 'ez-30' ? 30 : mode === 'ez-60' ? 60 : 0;
 
   const startTimer = useCallback(() => {
     if (timerStartedRef.current) return;
@@ -51,7 +53,12 @@ export function useGame() {
             wpm: calculateWpm(prev.score, elapsed),
           };
         }
-        const newTimeLeft = Math.max(0, (isSuddenDeath ? SUDDEN_DEATH_MAX_TIME : mode) - Math.floor(elapsed));
+        const totalDuration = isSuddenDeath
+          ? SUDDEN_DEATH_MAX_TIME
+          : isEzTimed
+            ? ezTimedDuration
+            : (mode as number);
+        const newTimeLeft = Math.max(0, totalDuration - Math.floor(elapsed));
         if (newTimeLeft <= 0) {
           return { ...prev, status: 'finished', timeLeft: 0, elapsedTime: elapsed };
         }
@@ -63,14 +70,20 @@ export function useGame() {
         };
       });
     }, 100);
-  }, [mode, isSuddenDeath, isUnlimited]);
+  }, [mode, isSuddenDeath, isUnlimited, isEzTimed, ezTimedDuration]);
 
   const startGame = useCallback(() => {
     clearTimer();
     timerStartedRef.current = false;
 
-    const word = mode === 'ez' || mode === 'ez-training' ? 'ez' : generateWord();
-    const duration = isUnlimited ? 0 : isSuddenDeath ? SUDDEN_DEATH_MAX_TIME : mode;
+    const word = mode === 'ez' || mode === 'ez-training' || isEzTimed ? 'ez' : generateWord();
+    const duration = isUnlimited
+      ? 0
+      : isSuddenDeath
+        ? SUDDEN_DEATH_MAX_TIME
+        : isEzTimed
+          ? ezTimedDuration
+          : (mode as number);
 
     setWordHistory([]);
     setState({
@@ -84,7 +97,7 @@ export function useGame() {
       wpm: 0,
       hasError: false,
     });
-  }, [mode, clearTimer, isSuddenDeath, isUnlimited]);
+  }, [mode, clearTimer, isSuddenDeath, isUnlimited, isEzTimed, ezTimedDuration]);
 
   // Watch for finished status to clear timer
   useEffect(() => {

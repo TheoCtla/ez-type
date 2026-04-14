@@ -19,6 +19,9 @@ export const GAME_MODES: { label: string; value: GameMode }[] = [
   { label: '60s', value: 60 },
   { label: 'Mort Subite', value: 'sudden-death' },
   { label: 'ez', value: 'ez' },
+  { label: 'ez 15s', value: 'ez-15' },
+  { label: 'ez 30s', value: 'ez-30' },
+  { label: 'ez 60s', value: 'ez-60' },
   { label: 'ez training', value: 'ez-training' },
 ];
 
